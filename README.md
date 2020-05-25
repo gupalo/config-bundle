@@ -8,6 +8,10 @@ Composer
 
     composer req gupalo/config-bundle
 
+Check if bundle was added to `config/bundles.php`
+
+    Gupalo\ConfigBundle\ConfigBundle::class => ['all' => true],
+
 Add routes - create `config/routes/config.yaml`
 
     config:
