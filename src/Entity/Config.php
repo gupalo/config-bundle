@@ -20,12 +20,12 @@ class Config
     /**
      * @ORM\Column(type="string", length=255, unique=true, name="name")
      */
-    private ?string $name;
+    private ?string $name = '';
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true, name="value")
      */
-    private ?string $value;
+    private ?string $value = '';
 
     public function getId(): ?int
     {
