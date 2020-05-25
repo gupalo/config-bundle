@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% set active_menu_item = 'config_index' %}
+
+{% block body %}
+    <h1 class="float-left">{{ 'config.heading'|trans }}</h1>
+    <a href="{{ path('config_new') }}" style="margin-top: 5px" class="btn btn-primary float-right">{{ 'btn.create'|trans }}</a>
+    <div class="clearfix"></div>
+
+    <table class="table table-bordered table-hover table-striped table-sm">
+        <thead>
+        <tr>
+            <th>{{ 'col.id'|trans }}</th>
+            <th>{{ 'col.name'|trans }}</th>
+            <th>{{ 'col.value'|trans }}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+            <tr>
+                <td class="text-nowrap">{{ item.id }}</td>
+                <td class="text-nowrap"><a href="{{ path('config_edit', {id: item.id}) }}">{{ item.name }}</a></td>
+                <td class="text-nowrap" style="width: 100%">{{ item.value|nl2br }}</td>
+                <td style="width: 0">
+                    <a href="{{ path('config_delete', {id: item.id}) }}" class="btn btn-danger btn-sm">{{ 'btn.delete'|trans }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

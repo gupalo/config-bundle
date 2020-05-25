@@ -1,0 +1,15 @@
+config_index:
+    path: /config
+    defaults: { _controller: 'Gupalo\ConfigBundle\Controller\ConfigController::index' }
+
+config_new:
+    path: /config/new
+    defaults: { _controller: 'Gupalo\ConfigBundle\Controller\ConfigController::new' }
+
+config_edit:
+    path: /config/{id}
+    defaults: { _controller: 'Gupalo\ConfigBundle\Controller\ConfigController::edit' }
+
+config_delete:
+    path: /config/{id}/delete
+    defaults: { _controller: 'Gupalo\ConfigBundle\Controller\ConfigController::delete' }

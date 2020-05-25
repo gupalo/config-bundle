@@ -1,0 +1,20 @@
+parameters:
+    config.defaults: {}
+
+services:
+    Gupalo\ConfigBundle\Controller\ConfigController:
+        class: Gupalo\ConfigBundle\Controller\ConfigController
+        public: true
+        autowire: true
+        calls:
+            - [setContainer, ["@service_container"]]
+
+    Gupalo\ConfigBundle\Repository\ConfigRepository:
+        class: Gupalo\ConfigBundle\Repository\ConfigRepository
+        public: true
+        autoconfigure: true
+        autowire: true
+        bind:
+            $defaults: '%config.defaults%'
+        tags: ['doctrine.repository_service', 'controller.service_arguments']
+
