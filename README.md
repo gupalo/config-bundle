@@ -27,6 +27,10 @@ Add translations - insert to `translations/messages.en.yaml`
 
     config:
         heading: Config
+        new:
+            heading: New Config
+        edit:
+            heading: Edit Config
 
 Create `config` table in DB
 
