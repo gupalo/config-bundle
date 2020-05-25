@@ -2,10 +2,11 @@
 
 namespace Gupalo\ConfigBundle\Repository;
 
+use DateTimeInterface;
 use Gupalo\ConfigBundle\Entity\Config;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use InvalidArgumentException;
+use Gupalo\DateUtils\DateUtils;
 use Throwable;
 
 /**
@@ -36,6 +37,8 @@ class ConfigRepository extends ServiceEntityRepository
             $value = json_encode($value, JSON_THROW_ON_ERROR, 512);
         } elseif (is_bool($value)) {
             $value = $value ? 1 : 0;
+        } elseif ($value instanceof DateTimeInterface) {
+            $value = DateUtils::format($value);
         } else {
             $value = (string)$value;
         }
@@ -51,12 +54,13 @@ class ConfigRepository extends ServiceEntityRepository
 
     /**
      * @param string $name
+     * @param mixed $default
      * @return mixed
      * @throws Throwable
      */
-    public function getValue(string $name)
+    public function getValue(string $name, $default = '')
     {
-        $defaultValue = $this->defaults[$name];
+        $defaultValue = $this->defaults[$name] ?? $default;
         if (is_int($defaultValue)) {
             $result = $this->getIntValue($name);
         } elseif (is_float($defaultValue)) {
@@ -65,6 +69,8 @@ class ConfigRepository extends ServiceEntityRepository
             $result = $this->getBoolValue($name);
         } elseif (is_array($defaultValue)) {
             $result = $this->getArrayValue($name);
+        } elseif ($defaultValue instanceof DateTimeInterface) {
+            $result = $this->getDateTimeValue($name);
         } else {
             $result = $this->getStringValue($name);
         }
@@ -72,37 +78,39 @@ class ConfigRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function getIntValue(string $name): int
+    public function getIntValue(string $name, int $default = 0): int
     {
-        return (int)$this->getStringValue($name);
+        return (int)$this->getStringValue($name, $default);
     }
 
-    public function getFloatValue(string $name): float
+    public function getFloatValue(string $name, float $default = 0.0): float
     {
-        return (float)$this->getStringValue($name);
+        return (float)$this->getStringValue($name, $default);
     }
 
-    public function getBoolValue(string $name): bool
+    public function getBoolValue(string $name, bool $default = false): bool
     {
-        return (float)$this->getStringValue($name);
+        return (float)$this->getStringValue($name, $default);
     }
 
     /**
      * @param string $name
+     * @param array $default
      * @return array
      * @throws Throwable
      */
-    public function getArrayValue(string $name): array
+    public function getArrayValue(string $name, array $default = []): array
     {
-        return json_decode($this->getStringValue($name), true, 512, JSON_THROW_ON_ERROR);
+        return json_decode($this->getStringValue($name, json_encode($default, JSON_THROW_ON_ERROR)), true, 512, JSON_THROW_ON_ERROR);
     }
 
-    public function getStringValue(string $name): string
+    public function getDateTimeValue(string $name, $default = '1970-01-01'): DateTimeInterface
     {
-        if (!array_key_exists($name, $this->defaults)) {
-            throw new InvalidArgumentException(sprintf('cannot find config "%s"', $name));
-        }
+        return DateUtils::create($this->getStringValue($name, $default));
+    }
 
+    public function getStringValue(string $name, $default = ''): string
+    {
         $qb = $this->getEntityManager()->getConnection()->createQueryBuilder()
             ->from('config')
             ->select('value')
@@ -112,7 +120,7 @@ class ConfigRepository extends ServiceEntityRepository
 
         $value = $qb->execute()->fetchColumn(0);
         if ($value === false) {
-            $value = (string)$this->defaults[$name];
+            $value = (string)($this->defaults[$name] ?? $default);
             $this->getEntityManager()->getConnection()->insert('config', [
                 'name' => $name,
                 'value' => $value,

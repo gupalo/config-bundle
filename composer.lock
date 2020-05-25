@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7949ec3795ab70af4375d235c27b16e6",
+    "content-hash": "562dbe385fa425f6c60d576acd1833e3",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1026,6 +1026,39 @@
             ],
             "description": "Extension of Symfony Notifier for browsers",
             "time": "2020-05-25T12:23:19+00:00"
+        },
+        {
+            "name": "gupalo/dateutils",
+            "version": "1.4.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gupalo/dateutils.git",
+                "reference": "24fe1ba9fd4423a99453d56b7295434e4b02a51c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gupalo/dateutils/zipball/24fe1ba9fd4423a99453d56b7295434e4b02a51c",
+                "reference": "24fe1ba9fd4423a99453d56b7295434e4b02a51c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gupalo\\DateUtils\\": "src/DateUtils/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "DateTime management",
+            "time": "2020-05-01T15:47:52+00:00"
         },
         {
             "name": "ocramius/package-versions",
@@ -6181,7 +6214,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.4"
+        "php": ">=7.4",
+        "ext-json": "*"
     },
     "platform-dev": [],
     "platform-overrides": {
