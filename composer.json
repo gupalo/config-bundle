@@ -7,12 +7,12 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Gupalo\\ConfigBundle\\": ""
+            "Gupalo\\ConfigBundle\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Gupalo\\ConfigBundle\\Tests\\": "Tests/"
+            "Gupalo\\ConfigBundle\\Tests\\": "tests"
         }
     },
     "require": {
