@@ -3,6 +3,7 @@
 namespace Gupalo\ConfigBundle\Repository;
 
 use DateTimeInterface;
+use Doctrine\DBAL\Connection;
 use Gupalo\ConfigBundle\Entity\Config;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -128,5 +129,42 @@ class ConfigRepository extends ServiceEntityRepository
         }
 
         return $value;
+    }
+
+    public function remove(string $name): void
+    {
+        $qb = $this->getEntityManager()->getConnection()->createQueryBuilder()
+            ->from('config')
+            ->delete()
+            ->andWhere('name = :name')
+            ->setParameter('name', $name);
+
+        $qb->execute();
+    }
+
+    public function removeBulk(array $names): void
+    {
+        if (!$names) {
+            return;
+        }
+
+        $qb = $this->getEntityManager()->getConnection()->createQueryBuilder()
+            ->from('config')
+            ->delete()
+            ->andWhere('name IN (:names)')
+            ->setParameter('names', $names, Connection::PARAM_STR_ARRAY);
+
+        $qb->execute();
+    }
+
+    public function removeLike(string $likeExpression): void
+    {
+        $qb = $this->getEntityManager()->getConnection()->createQueryBuilder()
+            ->from('config')
+            ->delete()
+            ->andWhere('name LIKE :expr')
+            ->setParameter('expr', $likeExpression);
+
+        $qb->execute();
     }
 }
