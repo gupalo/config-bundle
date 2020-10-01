@@ -1,0 +1,24 @@
+config:
+    base_template: 'base.html.twig'
+
+    btn:
+        create: Create
+        delete: Delete
+        save: Save
+
+    col:
+        id: ID
+        name: Name
+        value: Value
+
+    heading: Config
+    new:
+        heading: New Config
+    edit:
+        heading: Edit Config
+
+    notification:
+        not_found: 'Cannot find Config #%s'
+        created: 'Created Config "%s"'
+        updated: 'Updated Config "%s"'
+        deleted: 'Deleted Config #%s "%s"'

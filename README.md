@@ -17,24 +17,7 @@ Add routes - create `config/routes/config.yaml`
     config:
         resource: "@ConfigBundle/Resources/config/routing/routing.yaml"
 
-Add translations - insert to `translations/messages.en.yaml`
-
-    btn:
-        create: Create
-        delete: Delete
-        save: Save
-
-    col:
-        id: ID
-        name: Name
-        value: Value
-
-    config:
-        heading: Config
-        new:
-            heading: New Config
-        edit:
-            heading: Edit Config
+Override translations if needed in `translations/messages.en.yaml` (see `Resources/translations` for possible values).
 
 Create `config` table in DB
 
@@ -52,4 +35,4 @@ Add to `service.yaml` possible values and default values
 Usage
 -----
 
-Go to `/config`
+Go to `/config` in browser.

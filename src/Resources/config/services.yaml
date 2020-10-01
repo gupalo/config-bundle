@@ -1,5 +1,6 @@
 parameters:
     config.defaults: {}
+    config.template_base: 'base.html.twig'
 
 services:
     Gupalo\ConfigBundle\Controller\ConfigController:

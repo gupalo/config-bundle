@@ -13,6 +13,7 @@
         "gupalo/dateutils": "^1.4",
         "symfony/form": "^5.0",
         "symfony/notifier": "^5.0",
+        "symfony/translation": "^5.1",
         "symfony/yaml": "^5.0",
         "twig/twig": "^3.0"
     },

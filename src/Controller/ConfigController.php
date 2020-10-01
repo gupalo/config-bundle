@@ -10,10 +10,17 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
 class ConfigController extends AbstractController
 {
+    private TranslatorInterface $translator;
+
+    public function __construct(TranslatorInterface $translator) {
+        $this->translator = $translator;
+    }
+
     public function index(ConfigRepository $configRepository): Response
     {
         $items = $configRepository->findBy([], ['name' => 'ASC']);
@@ -33,7 +40,7 @@ class ConfigController extends AbstractController
             $entityManager->persist($deal);
             try {
                 $entityManager->flush();
-                $notifier->success(sprintf('Created Config "%s"', $deal->getName()));
+                $notifier->success(sprintf($this->translator->trans('config.notification.created'), $deal->getName()));
 
                 return $this->redirectToRoute('config_index');
             } catch (Throwable $e) {
@@ -50,7 +57,7 @@ class ConfigController extends AbstractController
     {
         $deal = $repository->find($id);
         if (!$deal) {
-            $notifier->warning(sprintf('Cannot find Config #%s', $id));
+            $notifier->warning(sprintf($this->translator->trans('config.notification.not_found'), $id));
 
             return $this->redirectToRoute('config_index');
         }
@@ -62,7 +69,7 @@ class ConfigController extends AbstractController
             $entityManager->persist($deal);
             try {
                 $entityManager->flush();
-                $notifier->success(sprintf('Updated Config "%s"', $deal->getName()));
+                $notifier->success(sprintf($this->translator->trans('config.notification.updated'), $deal->getName()));
 
                 return $this->redirectToRoute('config_index');
             } catch (Throwable $e) {
@@ -77,18 +84,18 @@ class ConfigController extends AbstractController
 
     public function delete(string $id, ConfigRepository $repository, EntityManagerInterface $entityManager, BrowserNotifier $notifier): Response
     {
-        $deal = $repository->find($id);
-        if ($deal) {
+        $item = $repository->find($id);
+        if ($item) {
             try {
-                $entityManager->remove($deal);
+                $entityManager->remove($item);
                 $entityManager->flush();
 
-                $notifier->success(sprintf('Deleted Config #%s "%s"', $id, $deal->getName()));
+                $notifier->success(sprintf($this->translator->trans('config.notification.deleted'), $id, $item->getName()));
             } catch (Throwable $e) {
                 $notifier->error($e->getMessage());
             }
         } else {
-            $notifier->warning(sprintf('Cannot find Config #%s', $id));
+            $notifier->warning(sprintf($this->translator->trans('config.notification.not_found'), $id));
         }
 
         return $this->redirectToRoute('config_index');

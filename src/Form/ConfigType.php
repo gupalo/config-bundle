@@ -16,17 +16,17 @@ class ConfigType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'col.name',
+                'label' => 'config.col.name',
             ])
             ->add('value', TextareaType::class, [
-                'label' => 'col.value',
+                'label' => 'config.col.value',
                 'attr' => [
                     'rows' => 5,
                     'style' => 'font-family: Consolas, "Courier New", monospaced; font-size: 13px',
                     'wrap' => 'off',
                 ],
             ])
-            ->add('save', SubmitType::class, ['label' => 'btn.save']);
+            ->add('save', SubmitType::class, ['label' => 'config.btn.save']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
