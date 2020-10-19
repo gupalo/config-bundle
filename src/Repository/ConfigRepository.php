@@ -63,17 +63,17 @@ class ConfigRepository extends ServiceEntityRepository
     {
         $defaultValue = $this->defaults[$name] ?? $default;
         if (is_int($defaultValue)) {
-            $result = $this->getIntValue($name);
+            $result = $this->getIntValue($name, $default);
         } elseif (is_float($defaultValue)) {
-            $result = $this->getFloatValue($name);
+            $result = $this->getFloatValue($name, $default);
         } elseif (is_bool($defaultValue)) {
-            $result = $this->getBoolValue($name);
+            $result = $this->getBoolValue($name, $default);
         } elseif (is_array($defaultValue)) {
-            $result = $this->getArrayValue($name);
+            $result = $this->getArrayValue($name, $default);
         } elseif ($defaultValue instanceof DateTimeInterface) {
-            $result = $this->getDateTimeValue($name);
+            $result = $this->getDateTimeValue($name, $default);
         } else {
-            $result = $this->getStringValue($name);
+            $result = $this->getStringValue($name, $default);
         }
 
         return $result;
@@ -91,7 +91,7 @@ class ConfigRepository extends ServiceEntityRepository
 
     public function getBoolValue(string $name, bool $default = false): bool
     {
-        return (float)$this->getStringValue($name, $default);
+        return (bool)$this->getStringValue($name, $default);
     }
 
     /**
@@ -119,7 +119,7 @@ class ConfigRepository extends ServiceEntityRepository
             ->setParameter('name', $name)
             ->setMaxResults(1);
 
-        $value = $qb->execute()->fetchColumn(0);
+        $value = $qb->execute()->fetchOne();
         if ($value === false) {
             $value = (string)($this->defaults[$name] ?? $default);
             $this->getEntityManager()->getConnection()->insert('config', [
