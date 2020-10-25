@@ -138,8 +138,6 @@ class ConfigRepository extends ServiceEntityRepository
     {
         try {
             $result = $this->cache->get($name, function (ItemInterface $item) use ($name, $default) {
-                $item->tag(['config_bundle']);
-
                 return $this->getStringValue($name, $default);
             });
         } catch (InvalidArgumentException $e) {
