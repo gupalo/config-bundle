@@ -8,6 +8,10 @@ use Gupalo\ConfigBundle\Entity\Config;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Gupalo\DateUtils\DateUtils;
+use Psr\Cache\InvalidArgumentException;
+use Symfony\Component\Cache\Adapter\AbstractAdapter;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Contracts\Cache\ItemInterface;
 use Throwable;
 
 /**
@@ -20,9 +24,12 @@ class ConfigRepository extends ServiceEntityRepository
 {
     private array $defaults;
 
+    private AbstractAdapter $cache;
+
     public function __construct(ManagerRegistry $registry, array $defaults)
     {
         $this->defaults = $defaults;
+        $this->cache = new FilesystemAdapter('config_bundle', 60);
 
         parent::__construct($registry, Config::class);
     }
@@ -45,6 +52,8 @@ class ConfigRepository extends ServiceEntityRepository
         }
 
         if ($value !== $this->getValue($name)) { // it will create value if not exist
+            $this->saveCache($name, $value);
+
             $this->getEntityManager()->getConnection()->update(
                 'config',
                 ['name' => $name, 'value' => $value],
@@ -53,12 +62,6 @@ class ConfigRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @param string $name
-     * @param mixed $default
-     * @return mixed
-     * @throws Throwable
-     */
     public function getValue(string $name, $default = '')
     {
         $defaultValue = $this->defaults[$name] ?? $default;
@@ -94,15 +97,15 @@ class ConfigRepository extends ServiceEntityRepository
         return (bool)$this->getStringValue($name, $default);
     }
 
-    /**
-     * @param string $name
-     * @param array $default
-     * @return array
-     * @throws Throwable
-     */
     public function getArrayValue(string $name, array $default = []): array
     {
-        return json_decode($this->getStringValue($name, json_encode($default, JSON_THROW_ON_ERROR)), true, 512, JSON_THROW_ON_ERROR);
+        try {
+            $result = json_decode($this->getStringValue($name, json_encode($default, JSON_THROW_ON_ERROR)), true, 512, JSON_THROW_ON_ERROR);
+        } catch (Throwable $e) {
+            $result = $default;
+        }
+
+        return $result;
     }
 
     public function getDateTimeValue(string $name, $default = '1970-01-01'): DateTimeInterface
@@ -131,8 +134,25 @@ class ConfigRepository extends ServiceEntityRepository
         return $value;
     }
 
+    public function getStringValueCached(string $name, $default = ''): string
+    {
+        try {
+            $result = $this->cache->get($name, function (ItemInterface $item) use ($name, $default) {
+                $item->tag(['config_bundle']);
+
+                return $this->getStringValue($name, $default);
+            });
+        } catch (InvalidArgumentException $e) {
+            $result = $this->getStringValue($name, $default);
+        }
+
+        return $result;
+    }
+
     public function remove(string $name): void
     {
+        $this->deleteCache($name);
+
         $qb = $this->getEntityManager()->getConnection()->createQueryBuilder()
             ->from('config')
             ->delete()
@@ -148,6 +168,10 @@ class ConfigRepository extends ServiceEntityRepository
             return;
         }
 
+        foreach ($names as $name) {
+            $this->deleteCache($name);
+        }
+
         $qb = $this->getEntityManager()->getConnection()->createQueryBuilder()
             ->from('config')
             ->delete()
@@ -159,6 +183,8 @@ class ConfigRepository extends ServiceEntityRepository
 
     public function removeLike(string $likeExpression): void
     {
+        // important: cannot remove cache
+
         $qb = $this->getEntityManager()->getConnection()->createQueryBuilder()
             ->from('config')
             ->delete()
@@ -166,5 +192,23 @@ class ConfigRepository extends ServiceEntityRepository
             ->setParameter('expr', $likeExpression);
 
         $qb->execute();
+    }
+
+    private function saveCache(string $name, bool $value): void
+    {
+        try {
+            $cacheItem = $this->cache->getItem($name);
+            $cacheItem->set($value);
+            $this->cache->save($cacheItem);
+        } catch (InvalidArgumentException $e) {
+        }
+    }
+
+    private function deleteCache(string $name): void
+    {
+        try {
+            $this->cache->delete($name);
+        } catch (InvalidArgumentException $e) {
+        }
     }
 }
