@@ -66,13 +66,13 @@ class ConfigRepository extends ServiceEntityRepository
     {
         $defaultValue = $this->defaults[$name] ?? $default;
         if (is_int($defaultValue)) {
-            $result = $this->getIntValue($name, $default);
+            $result = $this->getIntValue($name, (int)$default);
         } elseif (is_float($defaultValue)) {
-            $result = $this->getFloatValue($name, $default);
+            $result = $this->getFloatValue($name, (float)$default);
         } elseif (is_bool($defaultValue)) {
-            $result = $this->getBoolValue($name, $default);
+            $result = $this->getBoolValue($name, (bool)$default);
         } elseif (is_array($defaultValue)) {
-            $result = $this->getArrayValue($name, $default);
+            $result = $this->getArrayValue($name, (array)$default);
         } elseif ($defaultValue instanceof DateTimeInterface) {
             $result = $this->getDateTimeValue($name, $default);
         } else {
