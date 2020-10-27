@@ -64,9 +64,8 @@ class ConfigRepository extends ServiceEntityRepository
 
     /**
      * @param string $name
-     * @param string $default
-     * @return array|bool|DateTimeInterface|float|int|string
-     * @noinspection CallableParameterUseCaseInTypeContextInspection
+     * @param string|int|float|bool|array|DateTimeInterface $default
+     * @return string|int|float|bool|array|DateTimeInterface
      */
     public function getValue(string $name, $default = '')
     {
