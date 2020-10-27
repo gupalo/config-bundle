@@ -62,18 +62,39 @@ class ConfigRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @param string $name
+     * @param string $default
+     * @return array|bool|DateTimeInterface|float|int|string
+     * @noinspection CallableParameterUseCaseInTypeContextInspection
+     */
     public function getValue(string $name, $default = '')
     {
         $defaultValue = $this->defaults[$name] ?? $default;
         if (is_int($defaultValue)) {
+            if ((string)$default === '') {
+                $default = 0;
+            }
             $result = $this->getIntValue($name, (int)$default);
         } elseif (is_float($defaultValue)) {
+            if ((string)$default === '') {
+                $default = 0.0;
+            }
             $result = $this->getFloatValue($name, (float)$default);
         } elseif (is_bool($defaultValue)) {
+            if ((string)$default === '') {
+                $default = false;
+            }
             $result = $this->getBoolValue($name, (bool)$default);
         } elseif (is_array($defaultValue)) {
+            if ((string)$default === '') {
+                $default = [];
+            }
             $result = $this->getArrayValue($name, (array)$default);
         } elseif ($defaultValue instanceof DateTimeInterface) {
+            if ((string)$default === '') {
+                $default = '1970-01-01';
+            }
             $result = $this->getDateTimeValue($name, $default);
         } else {
             $result = $this->getStringValue($name, $default);
