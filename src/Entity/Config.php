@@ -23,7 +23,7 @@ class Config
     private ?string $name = '';
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true, name="value")
+     * @ORM\Column(type="text", nullable=true, name="value")
      */
     private ?string $value = '';
 
