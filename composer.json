@@ -11,19 +11,19 @@
         "doctrine/orm": "^2.7|^3.0",
         "gupalo/browser-notifier": "^1.0",
         "gupalo/dateutils": "^1.4",
-        "symfony/cache": "^5.1",
-        "symfony/form": "^5.0",
-        "symfony/notifier": "^5.0",
-        "symfony/translation": "^5.1",
-        "symfony/yaml": "^5.0",
-        "twig/twig": "^3.0"
+        "symfony/cache": "^5.4|^6.0",
+        "symfony/form": "^5.4|^6.0",
+        "symfony/notifier": "^5.4|^6.0",
+        "symfony/translation": "^5.4|^6.0",
+        "symfony/yaml": "^5.4|^6.0",
+        "twig/twig": "^3.3"
     },
     "require-dev": {
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^9.1",
-        "roave/security-advisories": "dev-master",
-        "symfony/security-guard": "^5.0",
-        "doctrine/doctrine-bundle": "^2.0"
+        "phpunit/phpunit": "^9.5",
+        "roave/security-advisories": "dev-latest",
+        "symfony/security-guard": "^5.4|^6.0",
+        "doctrine/doctrine-bundle": "^2.5"
     },
     "config": {
         "preferred-install": {
