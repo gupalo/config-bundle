@@ -6,6 +6,7 @@ services:
         class: Gupalo\ConfigBundle\Controller\ConfigController
         public: true
         autowire: true
+        autoconfigure: true
         tags: ['controller.service_arguments']
 
     Gupalo\ConfigBundle\Repository\ConfigRepository:
