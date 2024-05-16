@@ -11,11 +11,11 @@
         "doctrine/orm": "^2.7|^3.0",
         "gupalo/browser-notifier": "^1.0",
         "gupalo/dateutils": "^1.4",
-        "symfony/cache": "^5.4|^6.0",
-        "symfony/form": "^5.4|^6.0",
-        "symfony/notifier": "^5.4|^6.0",
-        "symfony/translation": "^5.4|^6.0",
-        "symfony/yaml": "^5.4|^6.0",
+        "symfony/cache": "^6.4|^7.0",
+        "symfony/form": "^6.4|^7.0",
+        "symfony/notifier": "^6.4|^7.0",
+        "symfony/translation": "^6.4|^7.0",
+        "symfony/yaml": "^6.4|^7.0",
         "twig/twig": "^3.3"
     },
     "require-dev": {
