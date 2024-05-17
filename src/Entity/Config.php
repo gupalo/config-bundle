@@ -4,27 +4,19 @@ namespace Gupalo\ConfigBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="Gupalo\ConfigBundle\Repository\ConfigRepository")
- * @ORM\Table(name="config")
- */
+#[ORM\Entity(repositoryClass: "Gupalo\ConfigBundle\Repository\ConfigRepository")]
+#[ORM\Table(name: "config")]
 class Config
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="id")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer", name: "id")]
     private ?int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true, name="name")
-     */
+    #[ORM\Column(type: "string", length: 255, unique: true, name: "name")]
     private ?string $name = '';
 
-    /**
-     * @ORM\Column(type="text", nullable=true, name="value")
-     */
+    #[ORM\Column(type: "text", nullable: true, name: "value")]
     private ?string $value = '';
 
     public function getId(): ?int
