@@ -6,31 +6,32 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.4",
+        "php": "^8.2",
         "ext-json": "*",
-        "doctrine/orm": "^2.7|^3.0",
+        "doctrine/doctrine-bundle": "^2.13",
+        "doctrine/orm": "^3.0",
         "gupalo/browser-notifier": "^1.0",
-        "gupalo/dateutils": "^1.4",
-        "symfony/cache": "^6.4|^7.0",
-        "symfony/form": "^6.4|^7.0",
-        "symfony/notifier": "^6.4|^7.0",
-        "symfony/translation": "^6.4|^7.0",
-        "symfony/yaml": "^6.4|^7.0",
+        "gupalo/dateutils": "^1.13",
+        "symfony/cache": "^6.4|^7.1",
+        "symfony/form": "^6.4|^7.1",
+        "symfony/framework-bundle": "^6.4|^7.1",
+        "symfony/http-foundation": "^6.4|^7.1",
+        "symfony/notifier": "^6.4|^7.1",
+        "symfony/translation": "^6.4|^7.1",
+        "symfony/yaml": "^6.4|^7.1",
         "twig/twig": "^3.3"
     },
     "require-dev": {
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^9.5",
-        "roave/security-advisories": "dev-latest",
-        "symfony/security-guard": "^5.4|^6.0",
-        "doctrine/doctrine-bundle": "^2.5"
+        "phpunit/phpunit": "^10.5",
+        "roave/security-advisories": "dev-latest"
     },
     "config": {
         "preferred-install": {
             "*": "dist"
         },
         "platform": {
-            "php": "7.4"
+            "php": "8.2"
         },
         "sort-packages": true
     },

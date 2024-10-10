@@ -1,22 +1,24 @@
-<?php
+<?php /** @noinspection UnknownInspectionInspection */
 
 namespace Gupalo\ConfigBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gupalo\ConfigBundle\Repository\ConfigRepository;
 
-#[ORM\Entity(repositoryClass: "Gupalo\ConfigBundle\Repository\ConfigRepository")]
-#[ORM\Table(name: "config")]
+#[ORM\Entity(repositoryClass: ConfigRepository::class)]
+#[ORM\Table(name: 'config')]
 class Config
 {
+    /** @noinspection PhpPropertyOnlyWrittenInspection */
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer", name: "id")]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private ?int $id;
 
-    #[ORM\Column(type: "string", length: 255, unique: true, name: "name")]
+    #[ORM\Column(name: 'name', type: 'string', length: 255, unique: true)]
     private ?string $name = '';
 
-    #[ORM\Column(type: "text", nullable: true, name: "value")]
+    #[ORM\Column(name: 'value', type: 'text', nullable: true)]
     private ?string $value = '';
 
     public function getId(): ?int
@@ -31,7 +33,7 @@ class Config
 
     public function setName(?string $name): self
     {
-        $this->name = $name ?? '';
+        $this->name = mb_substr($name ?? '', 0, 255);
 
         return $this;
     }

@@ -3,7 +3,7 @@
 namespace Gupalo\ConfigBundle\Repository;
 
 use DateTimeInterface;
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ArrayParameterType;
 use Gupalo\ConfigBundle\Entity\Config;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,6 +22,8 @@ use Throwable;
  */
 class ConfigRepository extends ServiceEntityRepository
 {
+    private const DEFAULT_TABLE_NAME = 'config';
+
     private array $defaults;
 
     private AbstractAdapter $cache;
@@ -67,7 +69,7 @@ class ConfigRepository extends ServiceEntityRepository
      * @param string|int|float|bool|array|DateTimeInterface $default
      * @return string|int|float|bool|array|DateTimeInterface
      */
-    public function getValue(string $name, $default = '')
+    public function getValue(string $name, mixed $default = ''): mixed
     {
         $defaultValue = $this->defaults[$name] ?? $default;
         if (is_int($defaultValue)) {
@@ -136,16 +138,16 @@ class ConfigRepository extends ServiceEntityRepository
     public function getStringValue(string $name, $default = ''): string
     {
         $qb = $this->getEntityManager()->getConnection()->createQueryBuilder()
-            ->from('config')
+            ->from($this->getTableName())
             ->select('value')
             ->andWhere('name = :name')
             ->setParameter('name', $name)
             ->setMaxResults(1);
 
-        $value = $qb->execute()->fetchOne();
+        $value = $qb->executeQuery()->fetchOne();
         if ($value === false) {
             $value = (string)($this->defaults[$name] ?? $default);
-            $this->getEntityManager()->getConnection()->insert('config', [
+            $this->getEntityManager()->getConnection()->insert($this->getTableName(), [
                 'name' => $name,
                 'value' => $value,
             ]);
@@ -172,12 +174,11 @@ class ConfigRepository extends ServiceEntityRepository
         $this->deleteCache($name);
 
         $qb = $this->getEntityManager()->getConnection()->createQueryBuilder()
-            ->from('config')
-            ->delete()
+            ->delete($this->getTableName())
             ->andWhere('name = :name')
             ->setParameter('name', $name);
 
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     public function removeBulk(array $names): void
@@ -191,12 +192,11 @@ class ConfigRepository extends ServiceEntityRepository
         }
 
         $qb = $this->getEntityManager()->getConnection()->createQueryBuilder()
-            ->from('config')
-            ->delete()
+            ->delete($this->getTableName())
             ->andWhere('name IN (:names)')
-            ->setParameter('names', $names, Connection::PARAM_STR_ARRAY);
+            ->setParameter('names', $names, ArrayParameterType::STRING);
 
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     public function removeLike(string $likeExpression): void
@@ -204,12 +204,11 @@ class ConfigRepository extends ServiceEntityRepository
         // important: cannot remove cache
 
         $qb = $this->getEntityManager()->getConnection()->createQueryBuilder()
-            ->from('config')
-            ->delete()
+            ->delete($this->getTableName())
             ->andWhere('name LIKE :expr')
             ->setParameter('expr', $likeExpression);
 
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     private function saveCache(string $name, bool $value): void
@@ -228,5 +227,10 @@ class ConfigRepository extends ServiceEntityRepository
             $this->cache->delete($name);
         } catch (InvalidArgumentException $e) {
         }
+    }
+
+    private function getTableName(): string
+    {
+        return $this->defaults['table_name'] ?? self::DEFAULT_TABLE_NAME;
     }
 }
