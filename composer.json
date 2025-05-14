@@ -9,7 +9,7 @@
         "php": "^8.2",
         "ext-json": "*",
         "doctrine/doctrine-bundle": "^2.13",
-        "doctrine/orm": "^3.0",
+        "doctrine/orm": "^2.0|3.0",
         "gupalo/browser-notifier": "^1.0",
         "gupalo/dateutils": "^1.13",
         "symfony/cache": "^6.4|^7.1",
