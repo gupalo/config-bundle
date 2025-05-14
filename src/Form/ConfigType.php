@@ -21,7 +21,7 @@ class ConfigType extends AbstractType
             ->add('value', TextareaType::class, [
                 'label' => 'config.col.value',
                 'attr' => [
-                    'rows' => 5,
+                    'rows' => 30,
                     'style' => 'font-family: Consolas, "Courier New", monospaced; font-size: 13px',
                     'wrap' => 'off',
                 ],

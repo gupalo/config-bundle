@@ -21,8 +21,8 @@
             <tr>
                 <td class="text-nowrap">{{ item.id }}</td>
                 <td class="text-nowrap"><a href="{{ path('config_edit', {id: item.id}) }}">{{ item.name }}</a></td>
-                <td class="text-nowrap" style="width: 100%">{{ item.value|nl2br }}</td>
-                <td style="width: 0">
+                <td class="text-nowrap" style="width: 80%">{{ item.value|nl2br }}</td>
+                <td class="text-nowrap">
                     <a href="{{ path('config_delete', {id: item.id}) }}" class="btn btn-danger btn-sm">{{ 'config.btn.delete'|trans }}</a>
                 </td>
             </tr>
