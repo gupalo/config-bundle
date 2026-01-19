@@ -13,7 +13,7 @@ class Config
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id', type: 'integer')]
-    private ?int $id;
+    private ?int $id = null;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, unique: true)]
     private ?string $name = '';

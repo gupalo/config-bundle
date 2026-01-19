@@ -1,8 +1,8 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Property Gupalo\\ConfigBundle\\Entity\\Config\:\:\$id is never written, only read\.$#'
-			identifier: property.onlyRead
+			message: '#^Property Gupalo\\ConfigBundle\\Entity\\Config\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
+			identifier: property.unusedType
 			count: 1
 			path: src/Entity/Config.php
 
