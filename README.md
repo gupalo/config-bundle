@@ -1,6 +1,13 @@
 Config Bundle
 =============
 
+Requirements
+------------
+
+- PHP 8.4+
+- Symfony 7.4 or 8.0+
+- Doctrine ORM 3.x
+
 Install
 -------
 

@@ -49,7 +49,7 @@ class ConfigController extends AbstractController
         }
 
         return $this->render('@Config/new.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
@@ -78,7 +78,7 @@ class ConfigController extends AbstractController
         }
 
         return $this->render('@Config/edit.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 

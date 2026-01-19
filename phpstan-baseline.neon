@@ -1,0 +1,19 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Property Gupalo\\ConfigBundle\\Entity\\Config\:\:\$id is never written, only read\.$#'
+			identifier: property.onlyRead
+			count: 1
+			path: src/Entity/Config.php
+
+		-
+			message: '#^Property Gupalo\\ConfigBundle\\Entity\\Config\:\:\$name \(string\|null\) is never assigned null so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: src/Entity/Config.php
+
+		-
+			message: '#^Parameter \#2 \$value of method Gupalo\\ConfigBundle\\Repository\\ConfigRepository\:\:saveCache\(\) expects bool, int\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Repository/ConfigRepository.php

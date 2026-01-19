@@ -9,7 +9,7 @@ class ConfigTest extends TestCase
 {
     public function testGetters(): void
     {
-        $config = (new Config())
+        $config = new Config()
             ->setName('test')
             ->setValue('test_value');
 

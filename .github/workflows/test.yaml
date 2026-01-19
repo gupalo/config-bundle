@@ -12,11 +12,11 @@ jobs:
         runs-on: self-hosted
         steps:
             -   name: checkout
-                uses: actions/checkout@v4
+                uses: actions/checkout@v6
                 with: { fetch-depth: 1 }
 
             -   name: composer cache
-                uses: actions/cache@v4
+                uses: actions/cache@v5
                 with:
                     path: /tmp/composer-cache
                     key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
@@ -25,7 +25,7 @@ jobs:
                 uses: php-actions/composer@v6
                 with:
                     dev: yes
-                    php_version: '8.3'
+                    php_version: '8.4'
                     memory_limit: '512M'
                     args: '--ignore-platform-reqs --no-ansi --no-scripts --no-progress -o'
 
@@ -33,15 +33,15 @@ jobs:
                 uses: php-actions/phpstan@v3
                 with:
                     path: 'src/'
-                    php_version: '8.3'
+                    php_version: '8.4'
                     php_extensions: mbstring redis pdo_mysql bcmath
                     memory_limit: '512M'
 
             -   name: phpunit
                 uses: php-actions/phpunit@v4
                 with:
-                    version: '10.5'
-                    php_version: '8.3'
+                    version: '11.5'
+                    php_version: '8.4'
                     configuration: phpunit.xml.dist
                     coverage_text: true
                     memory_limit: '512M'
@@ -53,10 +53,10 @@ jobs:
                 uses: php-actions/composer@v6
                 with:
                     dev: no
-                    php_version: '8.3'
+                    php_version: '8.4'
                     memory_limit: '512M'
                     args: '--ignore-platform-reqs --no-ansi --no-scripts --no-progress -o'
 
-            -   uses: actions/upload-artifact@v4
+            -   uses: actions/upload-artifact@v6
                 if: ${{ failure() }}
                 with: { name: 'logs', path: 'var/log' }
