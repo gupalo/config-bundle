@@ -2,8 +2,8 @@ parameters:
     config.defaults: {}
 
 services:
-    Gupalo\ConfigBundle\Controller\ConfigController:
-        class: Gupalo\ConfigBundle\Controller\ConfigController
+    Gupalo\ConfigBundle\Controller\ConfigCrudController:
+        class: Gupalo\ConfigBundle\Controller\ConfigCrudController
         public: true
         autowire: true
         autoconfigure: true
@@ -17,4 +17,3 @@ services:
         bind:
             $defaults: '%config.defaults%'
         tags: ['doctrine.repository_service']
-
